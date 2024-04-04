@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login - BankPatata</title>
+        <link rel="icon" type="image/x-icon" href="https://i.imgur.com/ClT7q2m.png">
+
+    </head>
+
+    <style>
+        /*LOGIN*/
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+margin: 0;
+padding: 0; 
+box-sizing: border-box;
+font-family: 'Poppins', sans-serif; 
+color: #fff;
+}
+
+.working {
+text-align: center;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+p {
+margin: 0;
+padding: 0; 
+text-align: center;
+align-items: center;
+font-family: 'Poppins', sans-serif; 
+color: #fff;
+}
+
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+background: #fff;
+}
+
+div.image {
+ background-image: url('https://i.imgur.com/ClT7q2m.png');
+}
+
+body.background-image-1 {
+background-image: url('https://i.imgur.com/UxSnQnT.jpeg');
+background-size: cover;
+background-position: center;
+}
+
+.wrapper {
+position: relative;
+width: 400px;
+height: 500px;
+background: rgb(46, 46, 57);
+box-shadow: 0 0 50px rgb(20, 20, 21);
+border-radius: 20px;
+padding: 40px;
+overflow: hidden;
+}
+
+.form-wrapper {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;
+transition: 1s ease-in-out;
+}
+
+.wrapper.active .form-wrapper.sign-in {
+transform: translateY(-450px);
+}
+
+.wrapper .form-wrapper.sign-up {
+position: absolute;
+top: 450px;
+left: 0;
+}
+
+.wrapper.active .form-wrapper.sign-up {
+transform: translateY(-450px);
+}
+
+h2 {
+font-size: 30px;
+color: #fff;
+text-align: center;
+}
+
+.input-group {
+position: relative;
+margin: 30px 0;
+border-bottom: 2px solid #fff;
+}
+
+.input-group label {
+position: absolute;
+top: 50%;
+left: 5px;
+transform: translateY(-50%);
+font-size: 16px;
+color: #fff;
+pointer-events: none;
+transition: .5s;
+}
+
+.input-group input {
+width: 320px;
+height: 40px;
+font-size: 16px;
+color: #fff;
+padding: 0 5px;
+background: transparent;
+border: none;
+outline: none;
+}
+
+.input-group input:focus~label,
+.input-group input:valid~label {
+top: -5px;
+}
+
+.remember {
+margin: -5px 0 15px 5px;
+}
+
+.remember label {
+color: #fff;
+font-size: 14px;
+}
+
+.remember label input {
+align-content: rgb(84, 82, 207);
+}
+
+button {
+position: relative;
+width: 100%;
+height: 40px;
+background: rgb(4, 0, 247);
+box-shadow: 0 0 10px rgb(26, 23, 207);
+font-size: 16px;
+color: rgb(255, 255, 255);
+font-weight: 500;
+cursor: pointer;
+border-radius: 30px;
+border: none;
+outline: none;
+}
+
+.signUp-link {
+font-size: 14px;
+text-align: center;
+margin: 15px 0;
+}
+
+.signUp-link p {
+color: #fff;
+}
+
+.signUp-link p a {
+color: rgb(178, 178, 188);
+text-decoration: none;
+font-weight: 500;
+}
+
+.signUp-link p a:hover {
+text-decoration: underline;
+}
+
+#logo {
+position: absolute;
+top: -10px;
+left: -80px;
+width: 400px;
+height: 100px;
+background-image: url('https://i.imgur.com/i0WNypp.png');
+background-size: 500px;
+background-repeat: no-repeat;
+}
+       
+    </style>
+    
+
+    
+    <body class="background-image-1">
+        <div id="logo"></div>
+        <div class="wrapper">
+            <div class="form-wrapper sign-in">
+                <form action="" id="form">
+                    <h2>Iniciar de Sesión</h2>
+                    <div class="input-group">
+                        <input type="text" required class="userin-link">
+                        <label for="">Usuario</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" required class="passwordin-link">
+                        <label for="">Contraseña</label>
+                    </div>
+                    <div class="remember">
+                        <label><input type="checkbox"> Recordarme</label>
+                    </div>
+
+                    <button type="submit" onclick = "login()" class="button_login">Iniciar Sesión</button>
+
+                    <div class="signUp-link">
+                        <p>¿No tienes una cuenta? <a href="#"
+                            class="signUpBtn-link">Registrarse</a></p>
+                    </div>
+                </form>
+            </div>
+    
+            <div class="form-wrapper sign-up">
+                <form action="">
+                    <br>
+                    <br>
+                    <h2>Registro de Cuenta</h2>
+                     
+                     <div class="input-group">
+                         <input type="text" required class="user-regis">
+                         <label for="">Usuario</label>
+                     </div>
+                     <div class="input-group">
+                         <input type="email" required class="email-regis">
+                         <label for="">Correo</label>
+                     </div>
+                     <div class="input-group">
+                         <input type="password" required class="password-regis">
+                         <label for="">Contraseña</label>
+                     </div>
+                     <div class="remember">
+                         <label><input type="checkbox" class="checkbox-regis"> Acepto los terminos & condiciones</label>
+                     </div>
+               <button type="submit" onclick = "register()">Registrarse</button>
+                    <div class="signUp-link">
+                        <p>¿Ya tienes una cuenta? <a href="#"
+                            class="signInBtn-link">Iniciar Sesión</a></p>
+                     </div>
+                </form>
+             </div>
+        </div>
+
+        
+        <div class="image"></div>
+    </body>
+
+    <script>
+       
+//LOGIN
+//Funciones
+
+window.location.href = './index.html?#'
+
+function checkLogin(username, password) {
+    const boardId = '4nP65kjP';
+    const apiKey = '42c42b2aeb78d2b5048bc85c88041207';
+    const token = '5d2c98ce4d6ca544fca293a91f7720b55d79832cdf431358705656707ea11e1b';
+
+    return new Promise((resolve, reject) => {
+        fetch(`https://api.trello.com/1/boards/${boardId}/cards?key=${apiKey}&token=${token}`)
+            .then(response => response.json())
+            .then(cards => {
+                let accountEnabled = false;
+                let balance;
+                let storedEmail;
+                let storeActivated;
+                let storedAccountEnabled;
+                let cardEnabled
+                const user = cards.find(card => {
+                    const [storedUsername, storedPassword, storedBalance, email, storeEnabled, activated, cardActivated] = card.name.split(' | ');
+                    if (storedUsername === username && storedPassword === password) {
+                        balance = storedBalance,
+                        storedEmail = email,
+                        storeActivated = storeEnabled,
+                        storedAccountEnabled = activated,
+                        accountEnabled = storedAccountEnabled === 'true' || storedAccountEnabled === true,
+                        cardEnabled = cardActivated
+                        return true;
+                    }
+                    return false;
+                });
+                if (user) {
+                    if (accountEnabled === true) {
+
+            
+                            const urlParams = new URLSearchParams({
+                      user: encodeURIComponent(username),
+                      accountStatus: encodeURIComponent(storedAccountEnabled),
+                      storeEnabled: encodeURIComponent(storeActivated),
+                      email: storedEmail,
+                      balance: encodeURIComponent(balance),
+                      CardEnabled: encodeURIComponent(cardEnabled),
+                    });
+                    window.location.href = `./main.html?${urlParams}`;
+                    document.querySelector('.userin-link').value = "";
+                    document.querySelector('.passwordin-link').value = "";
+
+                    resolve(`${username} | LOGIN_SUCCESS`);
+                    
+
+                  
+
+        
+
+                    } else if (storedAccountEnabled === 'new') {
+                        reject(new Error('Tu cuenta está deshabilitada para usar BankPatata.\n\nRecuerda que las cuenta nuevas deberán ser activadas para ingresar por primera vez.\nPara activarlas por favor llama a 1800-BANKPATATA\n\nPor favor contacta con soporte si crees que esto es un error.'));
+                        
+                    } else {
+                        reject(new Error('Tu cuenta está deshabilitada para usar BankPatata.\n\nPor favor contacta con soporte si crees que esto es un error.'));
+                    }
+                } else {
+                    reject(new Error('Usuario o contraseña inválidos'));
+                }
+            })
+            .catch(error => {
+                alert('**Hubo un error al iniciar sesión**\nPor favor comprueba tu conexión a internet')
+            }
+            );
+            
+    });
+}
+
+        function login() {
+    const username = document.querySelector('.userin-link').value;
+    const password = document.querySelector('.passwordin-link').value;
+
+
+    checkLogin(username, password)
+        .then(message => {
+            //login success
+        })
+        .catch(error => {
+            alert(error.message);
+        });
+}
+
+function register() {
+    const username = document.querySelector('.user-regis').value;
+    const email = document.querySelector('.email-regis').value;
+    const password = document.querySelector('.password-regis').value;
+    const box = document.querySelector('.checkbox-regis').value;
+
+
+    if (!box === 'on') {
+        reject(new Error('REGISTER | FAILED-ACC_ALREADY_EXIST'));
+        alert('Nesecitas aceptar los terminos y condiciones para continuar.');
+    }
+    //
+    const boardId = '4nP65kjP';
+    const apiKey = '42c42b2aeb78d2b5048bc85c88041207';
+    const token = '5d2c98ce4d6ca544fca293a91f7720b55d79832cdf431358705656707ea11e1b';
+    
+
+    return new Promise((resolve, reject) => {
+        // Verificar si el usuario ya existe
+        fetch(`https://api.trello.com/1/boards/${boardId}/cards?key=${apiKey}&token=${token}`)
+            .then(response => response.json())
+            .then(cards => {
+                const userExists = cards.some(card => {
+                    const [storedUsername] = card.name.split(' | ');
+                    return storedUsername === username;
+                });
+
+                if (userExists) {
+                    alert('La cuenta ya existe en el sistema. Por favor intenta iniciar sesión.');
+                    return;
+                } else {
+                    // Registrar al usuario
+                    const newUserCard = {
+                        name: `${username} | ${password} | 0 | ${email} | storeNO | new | false | BLOQUEDO-POR-SER-NUEVA-CUENTA`,
+                        idList: '65f10a46b34fce29bd56c327',
+                        idBoard: boardId,
+                        pos: 'bottom',
+                        key: apiKey,
+                        token: token
+                    };
+
+                    fetch(`https://api.trello.com/1/cards?key=${apiKey}&token=${token}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newUserCard)
+                    })
+                    .then(response => response.json())
+                    .then(newCard => {
+                        resolve(`${username} registrado correctamente`);
+                        alert('Tu cuenta fue registrada!');
+                        location.reload();
+                    })
+                    .catch(error => reject(error));
+                }
+            })
+            .catch(error => reject(error));
+    });
+}
+
+
+const signInBtnLink = document.querySelector('.signInBtn-link');
+const signUpBtnLink = document.querySelector('.signUpBtn-link');
+const wrapper = document.querySelector('.wrapper');
+
+signUpBtnLink.addEventListener('click', () => {
+   wrapper.classList.toggle('active');
+});
+
+signInBtnLink.addEventListener('click', () => {
+   wrapper.classList.toggle('active');
+});
+
+/*
+
+ENCONTRAR ID DE LISTA
+
+const boardId = '4nP65kjP'; // Reemplaza 'YOUR_BOARD_ID' con el ID de tu tablero en Trello
+const listName = 'Accounts'; // Reemplaza 'Nombre de tu lista' con el nombre de la lista que deseas buscar
+
+fetch(`https://api.trello.com/1/boards/${boardId}/lists?key=42c42b2aeb78d2b5048bc85c88041207&token=5d2c98ce4d6ca544fca293a91f7720b55d79832cdf431358705656707ea11e1b`)
+    .then(response => response.json())
+    .then(lists => {
+        const list = lists.find(list => list.name === listName);
+        if (list) {
+            console.log(`El ID de la lista "${listName}" es: ${list.id}`);
+        } else {
+            console.log(`No se encontró la lista "${listName}" en el tablero.`);
+        }
+    })
+    .catch(error => console.error('Error al obtener las listas del tablero:', error));
+*/
+    </script>
+</html>
