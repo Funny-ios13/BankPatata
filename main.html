@@ -541,15 +541,11 @@ function updateBalance(username) {
             dolStore.textContent = "$";
     }
     } else {
-        document.querySelector('.menu_store').setAttribute('hidden', 'true');
-        document.querySelector('.menu_normal').setAttribute('hidden', 'true');
         window.location.href = './index.html?#'
         alert('Inicio de Sesión\n**RECHAZADO**');
     }
 })
     .catch(error => {
-        document.querySelector('.menu_store').setAttribute('hidden', 'true');
-        document.querySelector('.menu_normal').setAttribute('hidden', 'true');
         window.location.href = './index.html?#'
         alert('Inicio de Sesión\n**RECHAZADO**');
     });     
