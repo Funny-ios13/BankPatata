@@ -348,13 +348,17 @@ function register() {
     const username = document.querySelector('.user-regis').value;
     const email = document.querySelector('.email-regis').value;
     const password = document.querySelector('.password-regis').value;
-    const box = document.querySelector('.checkbox-regis').value;
+    const box = document.querySelector('.checkbox-regis').checked;
 
-
-    if (!box === 'on') {
-        reject(new Error('REGISTER | FAILED-ACC_ALREADY_EXIST'));
-        alert('Nesecitas aceptar los terminos y condiciones para continuar.');
+  
+    if (username === "" || password === "" || email === "") {
+        return;
     }
+    if (!box) {
+        alert('Nesecitas aceptar los terminos y condiciones para continuar.');
+        return;
+    }
+    //
     //
     const boardId = '4nP65kjP';
     const apiKey = '42c42b2aeb78d2b5048bc85c88041207';
