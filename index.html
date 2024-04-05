@@ -125,6 +125,9 @@ outline: none;
     -webkit-text-fill-color: white !important;
 }
 
+
+
+
 .input-group input:focus~label,
 .input-group input:valid~label {
 top: -5px;
@@ -331,8 +334,16 @@ function checkLogin(username, password) {
 }
 
         function login() {
-    const username = document.querySelector('.userin-link').value;
+const username = document.querySelector('.userin-link').value;
     const password = document.querySelector('.passwordin-link').value;
+
+            if (username === "")  {
+                return;
+            }
+            if (password === "") {
+                return;
+            }
+    
 
 
     checkLogin(username, password)
@@ -358,7 +369,6 @@ function register() {
         alert('Nesecitas aceptar los terminos y condiciones para continuar.');
         return;
     }
-    //
     //
     const boardId = '4nP65kjP';
     const apiKey = '42c42b2aeb78d2b5048bc85c88041207';
