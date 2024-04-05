@@ -337,12 +337,10 @@ function checkLogin(username, password) {
 const username = document.querySelector('.userin-link').value;
     const password = document.querySelector('.passwordin-link').value;
 
-            if (username === "")  {
+            if (username === "" || password === "")  {
                 return;
             }
-            if (password === "") {
-                return;
-            }
+            
     
 
 
@@ -360,7 +358,7 @@ function register() {
     const email = document.querySelector('.email-regis').value;
     const password = document.querySelector('.password-regis').value;
     const box = document.querySelector('.checkbox-regis').checked;
-
+        
   
     if (username === "" || password === "" || email === "") {
         return;
