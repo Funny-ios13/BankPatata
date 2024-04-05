@@ -190,6 +190,19 @@ color: #fff;
     color: #fff;
 }
 
+.menu_retiro {
+    background: rgb(45, 43, 43);
+    position: relative;
+    width: 600px;
+    height: 500px;
+    background: rgb(46, 46, 57);
+    box-shadow: 0 0 50px rgb(20, 20, 21);
+    border-radius: 20px;
+    padding: 40px;
+    overflow: hidden;
+    color: #fff;
+}
+
 .menu_options {
 background: rgb(45, 43, 43);
 position: relative;
@@ -364,7 +377,7 @@ box-shadow: 0 0 10px rgb(0, 255, 8);
             <button type="button" class="example_button" onclick="openDeposit()">Depositos</button>
             <br>
             <br>
-            <button type="button" class="example_button" onclick="example1()">Retiros</button>
+            <button type="button" class="example_button" onclick="openRetiro()">Retiros</button>
             <br>
             <br>
             <button type="button" class="example_button" onclick="example1()">Transferencia</button>
@@ -410,6 +423,34 @@ box-shadow: 0 0 10px rgb(0, 255, 8);
         </div>
 
 
+        <div class="menu_retiro" hidden>
+            <h1 id="title-store2">Retiro de Dinero</h1>
+            <div id="user-info">
+            <form>
+                
+    
+                <label for="user">Usuario:</label>
+                <input type="text" id="user-ret" name="user"><br><br>
+                
+                <label for="description">Descripción:</label>
+                <input type="text" id="description-ret" name="description" disabled value="RETIRO"><br><br>
+                
+                <label for="price">Valor:</label>
+                <input type="number" id="price-ret" name="price" step="0.01"><br><br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <button type="button" onclick="makeRetiro(document.getElementById('user-ret').value, document.getElementById('description-ret').value, parseFloat(document.getElementById('price-ret').value))" class="button_store">Realizar Retiro</button>
+    
+                </form>
+             <br>
+                <button type="button" onclick="closeRetiro()" id="close-purchase">Volver</button>
+               
+            </div>
+            
+        </div>
+
    
     <script>
         function keyCodeValidation(key) {
@@ -443,6 +484,12 @@ function clearFormFields() {
     document.getElementById('user').value = '';
     document.getElementById('description').value = '';
     document.getElementById('price').value = '';
+
+    document.getElementById('user-ret').value = '';
+    document.getElementById('price-ret').value = '';
+
+    document.getElementById('user-depo').value = '';
+    document.getElementById('price-depo').value = '';
 };
 
 function closePurchase() {
@@ -461,6 +508,14 @@ function closeDeposit() {
     document.querySelector('.menu_deposit').setAttribute('hidden', 'true');
 };
 
+
+function closeRetiro() {
+
+clearFormFields();
+updateBalance(params.user);
+document.querySelector('.menu_store').removeAttribute('hidden');
+document.querySelector('.menu_retiro').setAttribute('hidden', 'true');
+};
 function closeOptions() {
     updateBalance(params.user);
     document.querySelector('.menu_store').removeAttribute('hidden');
@@ -482,6 +537,11 @@ function store2() {
 
 function openDeposit() {
     document.querySelector('.menu_deposit').removeAttribute('hidden');
+    document.querySelector('.menu_options').setAttribute('hidden', 'true');
+}
+
+function openRetiro() {
+    document.querySelector('.menu_retiro').removeAttribute('hidden');
     document.querySelector('.menu_options').setAttribute('hidden', 'true');
 }
 
@@ -1050,7 +1110,254 @@ function makeDeposit(user, description, price) {
     });
     }
 
+    function makeRetiro(user, description, price) {
+const boardId = '4nP65kjP';
+const listName = 'Movimientos';
+const listName2 = 'Accounts';
+const apiKey = '42c42b2aeb78d2b5048bc85c88041207';
+const token = '5d2c98ce4d6ca544fca293a91f7720b55d79832cdf431358705656707ea11e1b';
 
+function generateRandomID() {
+return Math.floor(10000 + Math.random() * 90000);
+}
+let id = generateRandomID();
+
+fetch(`https://api.trello.com/1/boards/${boardId}/lists?key=${apiKey}&token=${token}`)
+.then(response => response.json())
+.then(lists => {
+    const idsList = lists.find(list => list.name === 'IDS');
+
+    if (idsList) {
+        fetch(`https://api.trello.com/1/lists/${idsList.id}/cards?key=${apiKey}&token=${token}`)
+            .then(response => response.json())
+            .then(cards => {
+                while (cards.some(card => card.name.startsWith(`#${id} |`))) {
+                    id = generateRandomID();
+                }
+
+                //const usedStore = document.getElementById('name-purchase').textContent;
+                const formattedDate = new Date().toLocaleString();
+                const cardName = `#${id} | STORE: ${document.getElementById('name-purchase').textContent.trim()} | ${user} | ${description} | ${price} | ${formattedDate}`;
+                fetch(`https://api.trello.com/1/cards?key=${apiKey}&token=${token}&idList=${idsList.id}&name=${cardName}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: cardName
+                    })
+                })
+                .then(() => {
+                    fetch(`https://api.trello.com/1/boards/${boardId}/cards?key=${apiKey}&token=${token}`)
+                        .then(response => response.json())
+                        .then(cards => {
+                            const card = cards.find(card => card.name.startsWith(`${user} / `));
+                            const accCard = cards.find(card => card.name.startsWith(`${user} | `));
+                            const storeCardBETA = cards.find(card => card.name.startsWith(`${document.getElementById('name-purchase').textContent.trim()} | `));
+
+                            if (card && accCard) {
+                                const balance = accCard.name.split('|')[2].trim();
+
+                                if (balance === 'inf') {
+                                    if (user !== "") {
+                                        if (description !== "") {
+                                            if (price !== "" && !isNaN(price)) {
+                                                const cardenABLED = accCard.name.split('|')[6].trim();
+
+                                                if (cardenABLED === 'true') {
+
+                                                    const newTransaction = `RETIRO & ${price.toFixed(2)}`;
+                                                    const updatedTransactions = `${card.name} ! ${newTransaction}`;
+
+                                                    fetch(`https://api.trello.com/1/cards/${card.id}?key=${apiKey}&token=${token}`, {
+                                                            method: 'PUT',
+                                                            headers: {
+                                                                'Content-Type': 'application/json'
+                                                            },
+                                                            body: JSON.stringify({ name: updatedTransactions })
+                                                        })
+                                                        .then(() => {
+                                                            alert(`**RETIRO APROBADO | #${id}**\n\nEl retiro fue realizado con exito!`);
+                                                            clearFormFields();
+                                                            const balance1 = storeCardBETA.name.split('|')[2].trim();
+                                                            const balanceValue1 = parseInt(balance1);
+                                                            const newBalance1 = balanceValue1 + price;
+                                                            const updatedAccount1 = `${document.getElementById('name-purchase').textContent.trim()} | ${storeCardBETA.name.split('|')[1].trim()} | ${newBalance1} | ${storeCardBETA.name.split('|')[3].trim()} | ${storeCardBETA.name.split('|')[4].trim()} | ${storeCardBETA.name.split('|')[5].trim()} | ${storeCardBETA.name.split('|')[6].trim()}`;
+                                                            const updatedAccount = `${document.getElementById('name-purchase').textContent.trim()} | ${storeCardBETA.name.split('|')[1].trim()} | ${newBalance1} | ${storeCardBETA.name.split('|')[3].trim()} | ${storeCardBETA.name.split('|')[4].trim()} | ${storeCardBETA.name.split('|')[5].trim()} | ${storeCardBETA.name.split('|')[6].trim()}`;
+
+                                                            fetch(`https://api.trello.com/1/cards/${storeCardBETA.id}?key=${apiKey}&token=${token}`, {
+                                                                    method: 'PUT',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json'
+                                                                    },
+                                                                    body: JSON.stringify({ name: updatedAccount1 })
+                                                                })
+                                                                .then(() => {
+                                                                    //Mensaje a discord al dueño de la tienda
+                                                                })
+                                                                .catch(error => {
+                                                                    console.log(`Ocurrio un error: ${error}`)
+                                                                });
+
+                                                        })
+                                                        .catch(error => {
+                                                            alert(`**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por un error interno. Error: ${error}`);
+                                                        });
+                                                } else {
+                                                    alert(`**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por que la tarjeta se encuentra bloqueada.`);
+                                                    return;
+                                                }
+                                            } else {
+                                                alert('**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por que no especificaste ningún valor.');
+                                                return;
+                                            }
+                                        } else {
+                                            alert('**RETIRO RECHAZADO**\n\nHubo un error al procesar el retiro. Comprueba tu conexión a internet. 1');
+                                            return;
+                                        }
+                                    } else {
+                                        alert('**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por que no especificaste ningún usuario.');
+                                        return;
+                                    }
+                                } else {
+                                    const balanceValue = parseInt(balance);
+
+                                    if (balanceValue >= price) {
+                                        const cardenABLED = accCard.name.split('|')[6].trim();
+
+                                        if (cardenABLED === 'true') {
+                                          
+                                            if (user !== "") {
+                                                if (description !== "") {
+                                                    if (price !== "" && !isNaN(price)) {
+                                               
+                                                clearFormFields()
+                                                let updatedAccount1
+
+                                                if (storeCardBETA.name.split('|')[2].trim() !== 'inf') {
+                                                    const balance1 = storeCardBETA.name.split('|')[2].trim();
+                                                const balanceValue1 = parseInt(balance1);
+
+                                                const newBalance1 = balanceValue1 + price;
+
+                                                updatedAccount1 = `${document.getElementById('name-purchase').textContent.trim()} | ${storeCardBETA.name.split('|')[1].trim()} | ${newBalance1} | ${storeCardBETA.name.split('|')[3].trim()} | ${storeCardBETA.name.split('|')[4].trim()} | ${storeCardBETA.name.split('|')[5].trim()} | ${storeCardBETA.name.split('|')[6].trim()}`;
+                                                } else {
+                                                    const balance1 = storeCardBETA.name.split('|')[2].trim();
+
+                                                      const newBalance1 = balance1;
+
+                                                updatedAccount1 = `${document.getElementById('name-purchase').textContent.trim()} | ${storeCardBETA.name.split('|')[1].trim()} | ${newBalance1} | ${storeCardBETA.name.split('|')[3].trim()} | ${storeCardBETA.name.split('|')[4].trim()} | ${storeCardBETA.name.split('|')[5].trim()} | ${storeCardBETA.name.split('|')[6].trim()}`;
+                                                }
+                                             //   const updatedAccount2 = `${user} | ${storeCardBETA.name.split('|')[1].trim()} | ${newBalance1} | ${storeCardBETA.name.split('|')[3].trim()} | ${storeCardBETA.name.split('|')[4].trim()} | ${storeCardBETA.name.split('|')[5].trim()} | ${storeCardBETA.name.split('|')[6].trim()}`;
+                    
+                      
+                                                const balance = accCard.name.split('|')[2].trim();
+                                                const balanceValue = parseInt(balance);
+
+                                   
+                                                const newBalance = balanceValue - price;
+
+                 
+
+                                                const updatedAccount = `${user} | ${accCard.name.split('|')[1].trim()} | ${newBalance} | ${accCard.name.split('|')[3].trim()} | ${accCard.name.split('|')[4].trim()} | ${accCard.name.split('|')[5].trim()} | ${accCard.name.split('|')[6].trim()}`;
+                                                fetch(`https://api.trello.com/1/cards/${storeCardBETA.id}?key=${apiKey}&token=${token}`, {
+                                                        method: 'PUT',
+                                                        headers: {
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify({ name: updatedAccount1 })
+                                                    })
+
+                                                    .then(() => {
+                                                        //Mensaje a discord al dueño de la tienda
+                                                    })
+                                                    .catch(error => {
+                                                        console.log(`Ocurrido un error: ${error}`)
+                                                    });
+
+                                                    //EN ESTA PARTE 
+
+                                                fetch(`https://api.trello.com/1/cards/${accCard.id}?key=${apiKey}&token=${token}`, {
+                                                        method: 'PUT',
+                                                        headers: {
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify({ name: updatedAccount }) //JUSTO AQUI
+                                                    })
+
+                                                    .then(() => {
+                                                        const newTransaction = `RETIRO & ${price.toFixed(2)}`;
+                                                        const updatedTransactions = `${card.name} ! ${newTransaction}`;
+
+                                                        fetch(`https://api.trello.com/1/cards/${card.id}?key=${apiKey}&token=${token}`, {
+                                                                method: 'PUT',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json'
+                                                                },
+                                                                body: JSON.stringify({ name: updatedTransactions })
+                                                            })
+
+                                                            .then(() => {
+                                                                alert(`**RETIRO APROBADO | #${id}**\n\nEl retiro fue realizado con exito!`);
+                                                            })
+
+                                                            .catch(error => {
+                                                                alert(`**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por un error interno. Error: ${error}`);
+                                                            });
+                                                    })
+                                                    .catch(error => {
+                                                        alert(`**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por un error interno. Error: ${error}`);
+                                                    });
+                                         
+                                                } else {
+                                                alert('**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por que no especificaste ningún valor a retirar.');
+                                                return;
+                                            }
+                                        } else {
+                                            alert('**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por que no especificaste ninguna descripción.');
+                                            return;
+                                        }
+                                    } else {
+                                        alert('**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por que no especificaste ningún usuario.');
+                                        return;
+                                    }
+                                
+                                
+                                        } else {
+                                            alert(`**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por que la tarjeta se encuentra bloqueada.`);
+                                            return;
+                                        }
+                                    } else {
+                                        alert('**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por falta de fondos en la cuenta.');
+                                    }
+                                }
+                            } else {
+                                alert('**RETIRO RECHAZADO**\n\nEl retiro fue rechazado porque no se encontró ese usuario.');
+                            }
+                        })
+                        .catch(error => {
+                            alert(`**RETIRO RECHAZADO**\n\nEl retiro fue rechazado por un error interno. Error: ${error}`);
+                        });
+                })
+                .catch(error => {
+                    //Error creating card in 'IDS' list
+                    alert(`Error critico interno. Por favor intenta verificar tu conexión a internet.`);
+                });
+        })
+        .catch(error => {
+            //Error fetching cards from 'IDS' list
+            alert(`Error critico interno. Por favor intenta verificar tu conexión a internet.`);
+        });
+} else {
+    //List "IDS" not found in Trello board.
+    alert('Error critico interno. Por favor intenta verificar tu conexión a internet.');
+}
+})
+.catch(error => {
+//Error fetching lists from Trello board
+alert('Error critico interno. Por favor intenta verificar tu conexión a internet.');
+});
+}
 
 // NORMAL
 document.getElementById('email').textContent = params.email || 'No disponible';
