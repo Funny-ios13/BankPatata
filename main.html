@@ -47,6 +47,46 @@ margin-left: 10px;
 color: #fff;
 }
 
+.user1-transfer {
+    background-color: rgb(45, 43, 43);
+    box-sizing: border-box;
+    border-radius: 5px;
+    border-color: rgb(19, 18, 18);
+    padding: -10px;
+    margin-left: 10px;
+    color: #fff;
+    }
+
+    .user2-transfer {
+        background-color: rgb(45, 43, 43);
+        box-sizing: border-box;
+        border-radius: 5px;
+        border-color: rgb(19, 18, 18);
+        padding: -10px;
+        margin-left: 10px;
+        color: #fff;
+        }
+    
+    .description-transf {
+    background-color: rgb(45, 43, 43);
+    box-sizing: border-box;
+    border-radius: 5px;
+    border-color: rgb(19, 18, 18);
+    padding: -10px;
+    margin-left: 10px;
+    color: #fff;
+    }
+    
+    .price-transf {
+    background-color: rgb(45, 43, 43);
+    box-sizing: border-box;
+    border-radius: 5px;
+    border-color: rgb(19, 18, 18);
+    padding: -10px;
+    margin-left: 10px;
+    color: #fff;
+    }
+
 .verified-icon {
 width: 20px;
 height: 20px;
@@ -177,7 +217,21 @@ overflow: hidden;
 color: #fff;
 }
 
+
 .menu_deposit {
+    background: rgb(45, 43, 43);
+    position: relative;
+    width: 600px;
+    height: 500px;
+    background: rgb(46, 46, 57);
+    box-shadow: 0 0 50px rgb(20, 20, 21);
+    border-radius: 20px;
+    padding: 40px;
+    overflow: hidden;
+    color: #fff;
+}
+
+.menu_transfer {
     background: rgb(45, 43, 43);
     position: relative;
     width: 600px;
@@ -440,7 +494,7 @@ box-shadow: 0 0 10px rgb(0, 255, 8);
                 <label for="price">Monto:</label>
                 <input type="number" id="price-transf" name="price" step="0.01"><br><br>
                 <br>
-                <br>
+           
                 <br>
                 <br>
                 <button type="button" onclick="makeTransferencia(document.getElementById('user1-transf').value, document.getElementById('user2-transf').value, document.getElementById('description-transf').value, parseFloat(document.getElementById('price-transf').value))" class="button_store">Realizar Transferencia</button>
@@ -1194,13 +1248,13 @@ function makeTransferencia(user1, user2, description, price) {
                             .then(cards => {
                                 const card = cards.find(card => card.name.startsWith(`${user1} / `));
                                 const accCard = cards.find(card => card.name.startsWith(`${user1} | `));
-                                const card2 = cards.find(card => card.name.startsWith(`${user2} / `));
-                                const accCard2 = cards.find(card => card.name.startsWith(`${user2} | `));
+                                const card2 = cards.find(card2 => card2.name.startsWith(`${user2} / `));
+                                const accCard2 = cards.find(card2 => card2.name.startsWith(`${user2} | `));
 
                                 const storeCardBETA = cards.find(card => card.name.startsWith(`${document.getElementById('name-purchase').textContent.trim()} | `));
-    
+                                const killswitch = true
                       ///
-                                if (card && accCard && card2 && accCard2) {
+                                if (killswitch === true) {
                                     
                                     const balance_user1 = accCard.name.split('|')[2].trim();
                                     const balance_user2 = accCard2.name.split('|')[2].trim();
@@ -1284,7 +1338,9 @@ function makeTransferencia(user1, user2, description, price) {
                                                     const balanceValue_user_1 = parseInt(balance_user1);
                                                     const balance_user_2 = accCard.name.split('|')[2].trim();
                                                     const balanceValue_user_2 = parseInt(balance_user2);
-    
+
+                                                if (balanceValue_user_1 >= price) {
+                                                        
                                        
                                                     const newBalance_user1 = balanceValue_user_1 - price;
                                                     const newBalance_user2 = balanceValue_user_2 + price;
@@ -1309,7 +1365,7 @@ function makeTransferencia(user1, user2, description, price) {
                                                         });
     
                                                         //EN ESTA PARTE 
-                                                        fetch(`https://api.trello.com/1/cards/${accCard.id}?key=${apiKey}&token=${token}`, {
+                                                        fetch(`https://api.trello.com/1/cards/${accCard2.id}?key=${apiKey}&token=${token}`, {
                                                             method: 'PUT',
                                                             headers: {
                                                                 'Content-Type': 'application/json'
@@ -1329,7 +1385,7 @@ function makeTransferencia(user1, user2, description, price) {
                                                             const newTransaction22 = `${description} & ${price.toFixed(2)}`;
                                                             const updatedTransactions22 = `${card2.name} ! ${newTransaction22}`;
     
-                                                            fetch(`https://api.trello.com/1/cards/${card.id}?key=${apiKey}&token=${token}`, {
+                                                            fetch(`https://api.trello.com/1/cards/${card2.id}?key=${apiKey}&token=${token}`, {
                                                                     method: 'PUT',
                                                                     headers: {
                                                                         'Content-Type': 'application/json'
@@ -1337,15 +1393,15 @@ function makeTransferencia(user1, user2, description, price) {
                                                                     body: JSON.stringify({ name: updatedTransactions22 })
                                                                 })
 
-                                                            const newTransaction = `${description} & ${price.toFixed(2)}`;
-                                                            const updatedTransactions = `${card.name} ! ${newTransaction}`;
+                                                            const newTransaction11 = `${description} & ${price.toFixed(2)}`;
+                                                            const updatedTransactions11 = `${card.name} ! ${newTransaction11}`;
     
                                                             fetch(`https://api.trello.com/1/cards/${card.id}?key=${apiKey}&token=${token}`, {
                                                                     method: 'PUT',
                                                                     headers: {
                                                                         'Content-Type': 'application/json'
                                                                     },
-                                                                    body: JSON.stringify({ name: updatedTransactions })
+                                                                    body: JSON.stringify({ name: updatedTransactions11 })
                                                                 })
     
                                                                 .then(() => {
@@ -1354,16 +1410,25 @@ function makeTransferencia(user1, user2, description, price) {
     
                                                                 .catch(error => {
                                                                     alert(`**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada por un error interno. Error: ${error}`);
+                                                                    return; 
                                                                 });
                                                         })
                                                         .catch(error => {
                                                             alert(`**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada por un error interno. Error: ${error}`);
+                                                            return;
                                                         });
                                              
+                                                    } else {
+                                                        alert(`**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada por falta de fondos en la cuenta.`);
+                                                        return;
+                                                    }
+
                                                     } else {
                                                     alert('**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada por que no especificaste ningún monto.');
                                                     return;
                                                 }
+
+                                                
                                             } else {
                                                 alert('**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada por que no especificaste ninguna descripción.');
                                                 return;
@@ -1378,33 +1443,39 @@ function makeTransferencia(user1, user2, description, price) {
                                                 alert(`**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada por que la tarjeta se encuentra bloqueada.`);
                                                 return;
                                             }
-                                       
+                        
                                     }
                                 } else {
                                     alert('**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada porque no se encontró ese usuario.');
+                                    return;
                                 }
                             })
                             .catch(error => {
                                 alert(`**TRANSACCIÓN RECHAZADA**\n\nLa transferencia fue rechazada por un error interno. Error: ${error}`);
+                                return;
                             });
                     })
                     .catch(error => {
                         //Error creating card in 'IDS' list
                         alert(`**TRANSACCIÓN RECHAZADA**\n\nPor favor intenta verificar tu conexión a internet.`);
+                        return;
                     });
             })
             .catch(error => {
                 //Error fetching cards from 'IDS' list
                 alert(`**TRANSACCIÓN RECHAZADA**\n\nPor favor intenta verificar tu conexión a internet.`);
+                return;
             });
     } else {
         //List "IDS" not found in Trello board.
         alert('**TRANSACCIÓN RECHAZADA**\n\nPor favor intenta verificar tu conexión a internet.');
+        return;
     }
     })
     .catch(error => {
     //Error fetching lists from Trello board
     alert('**TRANSACCIÓN RECHAZADA**\n\nPor favor intenta verificar tu conexión a internet.');
+    return;
     });
     }
 //////////////////////////
