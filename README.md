@@ -1,2 +1,2 @@
 # BankPatata
-V.5.2
+V.8
