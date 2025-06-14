@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de BankPatata</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/ClT7q2m.png">
+    <link rel="stylesheet" href="main_style_redesigned.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="panel-wrapper">
+        <header class="panel-header">
+            <img src="https://i.imgur.com/i0WNypp.png" alt="BankPatata Logo" class="logo">
+            <button type="button" class="btn-logout">Cerrar Sesión</button>
+        </header>
+
+        <main class="content-area">
+            
+            <div class="menu-container" id="menu_normal" hidden>
+                <div class="menu-header">
+                    <h1>Tu Cuenta Bancaria</h1>
+                    <p class="subtitle">Resumen de tu actividad financiera.</p>
+                </div>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <span class="info-label">Saldo Actual</span>
+                        <span class="info-value" id="balance"></span><span class="dolar-symbol">$</span>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-label">Estado de la Tarjeta</span>
+                        <span class="info-value" id="card-status"></span>
+                    </div>
+                    <div class="info-card full-width">
+                        <span class="info-label">Correo Electrónico</span>
+                        <span class="info-value" id="email"></span>
+                    </div>
+                </div>
+                <h3>Últimos Movimientos</h3>
+                <div id="transactions-container" class="transactions-container"></div>
+            </div>
+
+            <div class="menu-container" id="menu_store" hidden>
+                <div class="menu-header">
+                    <h1 id="title-store">Sistema de Tiendas</h1>
+                    <p class="subtitle" id="tienda-label-store">Tienda: <span id="name-store"></span></p>
+                </div>
+                <div class="info-grid">
+                     <div class="info-card">
+                        <span class="info-label">Saldo de la Tienda</span>
+                        <span class="info-value" id="balance-store"></span><span id="dolar-symbol-store">$</span>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-label">Estado de la Cuenta</span>
+                        <span class="info-value" id="account-status-store"></span>
+                    </div>
+                </div>
+                <div class="button-group-vertical">
+                    <button type="button" class="btn-options" hidden>Opciones Avanzadas</button>
+                    <button type="button" class="btn-purchase-beta">Realizar Cobro (BETA)</button>
+                </div>
+            </div>
+
+            <div class="menu-container" id="menu_options" hidden>
+                <div class="menu-header">
+                    <h1>Opciones Avanzadas de Tienda</h1>
+                    <p class="subtitle">Herramientas administrativas para tu negocio.</p>
+                </div>
+                <div class="button-group-vertical">
+                    <button type="button" data-menu="menu_deposit">Realizar Depósito a Cliente</button>
+                    <button type="button" data-menu="menu_retiro">Realizar Retiro a Cliente</button>
+                    <button type="button" data-menu="menu_transfer">Transferencia Administrativa</button>
+                    <button type="button" data-menu="menu_cuentas">Administrar Cuentas</button>
+                    <button type="button" class="btn-back" data-target="menu_store">Volver a Tienda</button>
+                </div>
+            </div>
+
+            <div class="menu-container" id="menu_cuentas" hidden>
+                <div class="menu-header">
+                    <h1>Administración de Cuentas</h1>
+                    <p class="subtitle">Gestiona las cuentas de los usuarios de BankPatata.</p>
+                </div>
+                <div class="button-group-vertical">
+                    <button type="button" data-menu="menu_crear_cuenta">Crear Nueva Cuenta</button>
+                    <button type="button" data-menu="menu_modificar_cuenta">Modificar Estado de Cuenta</button>
+                    <button type="button" class="btn-back" data-target="menu_options">Volver a Opciones</button>
+                </div>
+            </div>
+
+            <div class="menu-container form-view" id="menu_crear_cuenta" hidden>
+                <div class="menu-header"><h1>Crear Nueva Cuenta de Usuario</h1></div>
+                <form id="admin-create-form" class="transaction-form">
+                    <div class="input-group"><label for="admin-create-user">Nombre de Usuario:</label><input type="text" id="admin-create-user" required></div>
+                    <div class="input-group"><label for="admin-create-email">Correo Electrónico:</label><input type="email" id="admin-create-email" required></div>
+                    <div class="input-group"><label for="admin-create-pass">Contraseña Temporal:</label><input type="text" id="admin-create-pass" required></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-back" data-target="menu_cuentas">Cancelar</button>
+                        <button type="submit" class="btn-primary">Crear Cuenta</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="menu-container form-view" id="menu_modificar_cuenta" hidden>
+                 <div class="menu-header"><h1>Modificar Estado de Cuenta</h1></div>
+                 <form id="admin-modify-form" class="transaction-form">
+                     <div id="modify-step-1">
+                         <div class="input-group"><label for="admin-modify-user">Nombre de Usuario:</label><input type="text" id="admin-modify-user" required></div>
+                         <div class="form-actions">
+                            <button type="button" class="btn-back" data-target="menu_cuentas">Cancelar</button>
+                            <button type="button" id="btn-find-user" class="btn-primary">Buscar Usuario</button>
+                        </div>
+                     </div>
+                     <div id="modify-step-2" hidden>
+                        <div class="input-group">
+                            <label for="admin-modify-status">Estado de la Cuenta:</label>
+                            <select id="admin-modify-status">
+                                <option value="true">Activada</option>
+                                <option value="false">Suspendida (no puede iniciar sesión)</option>
+                                <option value="new">Nueva (requiere activación)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="admin-modify-card">Estado de la Tarjeta:</label>
+                            <select id="admin-modify-card">
+                                <option value="true">Habilitada (puede hacer transacciones)</option>
+                                <option value="false">Deshabilitada (transacciones bloqueadas)</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-back" data-target="menu_cuentas">Cancelar</button>
+                            <button type="submit" class="btn-primary">Guardar Cambios</button>
+                        </div>
+                     </div>
+                 </form>
+            </div>
+            
+            <div class="menu-container form-view" id="menu_purchases" hidden>
+                <div class="menu-header">
+                     <h1>Realizar un Cobro</h1>
+                     <p>Tienda: <span id="name-purchase"></span></p>
+                </div>
+                 <form id="purchase-form" class="transaction-form">
+                    <div class="input-group"><label for="purchase-user">Usuario Cliente:</label><input type="text" id="purchase-user" name="user" required></div>
+                    <div class="input-group"><label for="purchase-desc">Descripción del Cobro:</label><input type="text" id="purchase-desc" name="description" required></div>
+                    <div class="input-group"><label for="purchase-price">Monto a Cobrar:</label><input type="number" id="purchase-price" name="price" step="0.01" required></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-back" data-target="menu_store">Cancelar</button>
+                        <button type="submit" class="btn-primary">Confirmar Cobro</button>
+                    </div>
+                 </form>
+            </div>
+            
+            <div class="menu-container form-view" id="menu_deposit" hidden>
+                 <div class="menu-header"><h1>Realizar Depósito a Cliente</h1></div>
+                <form id="deposit-form" class="transaction-form">
+                    <div class="input-group"><label for="deposit-user">Usuario Cliente:</label><input type="text" id="deposit-user" name="user" required></div>
+                    <div class="input-group"><label>Descripción:</label><input type="text" value="DEPOSITO BANKPATATA" disabled></div>
+                    <div class="input-group"><label for="deposit-amount">Monto a Depositar:</label><input type="number" id="deposit-amount" name="price" step="0.01" required></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-back" data-target="menu_options">Cancelar</button>
+                        <button type="submit" class="btn-primary">Confirmar Depósito</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="menu-container form-view" id="menu_retiro" hidden>
+                <div class="menu-header"><h1>Realizar Retiro a Cliente</h1></div>
+                <form id="retiro-form" class="transaction-form">
+                    <div class="input-group"><label for="retiro-user">Usuario Cliente:</label><input type="text" id="retiro-user" name="user" required></div>
+                    <div class="input-group"><label>Descripción:</label><input type="text" value="RETIRO BANKPATATA" disabled></div>
+                    <div class="input-group"><label for="retiro-amount">Monto a Retirar:</label><input type="number" id="retiro-amount" name="price" step="0.01" required></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-back" data-target="menu_options">Cancelar</button>
+                        <button type="submit" class="btn-primary">Confirmar Retiro</button>
+                    </div>
+                </form>
+            </div>
+    
+            <div class="menu-container form-view" id="menu_transfer" hidden>
+                <div class="menu-header"><h1>Transferencia Administrativa</h1></div>
+                <form id="transfer-form" class="transaction-form">
+                    <div class="input-group"><label for="transfer-sender">Tu Usuario (Envío):</label><input type="text" id="transfer-sender" name="user1" required></div>
+                    <div class="input-group"><label for="transfer-receiver">Usuario Beneficiario:</label><input type="text" id="transfer-receiver" name="user2" required></div>
+                    <div class="input-group"><label for="transfer-desc">Descripción:</label><input type="text" id="transfer-desc" name="description" placeholder="Transferencia" required></div>
+                    <div class="input-group"><label for="transfer-amount">Monto:</label><input type="number" id="transfer-amount" name="price" step="0.01" required></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-back" data-target="menu_options">Cancelar</button>
+                        <button type="submit" class="btn-primary">Confirmar Transferencia</button>
+                    </div>
+                </form>
+            </div>
+            
+        </main>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

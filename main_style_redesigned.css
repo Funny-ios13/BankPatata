@@ -1,0 +1,239 @@
+/* --- RESET Y ESTILOS GLOBALES --- */
+* {
+    margin: 0;
+    padding: 0; 
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif; 
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    color: #212529;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* --- ESTRUCTURA DEL PANEL --- */
+.panel-wrapper {
+    width: 100%;
+    max-width: 800px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.panel-header .logo {
+    max-height: 40px;
+}
+
+.content-area {
+    padding: 30px;
+}
+
+/* --- ESTILOS DE MENÚS Y TÍTULOS --- */
+.menu-header {
+    margin-bottom: 30px;
+}
+.menu-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #212529;
+}
+.menu-header h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+.menu-header .subtitle {
+    font-size: 16px;
+    color: #6c757d;
+}
+
+/* --- TARJETAS DE INFORMACIÓN --- */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.info-card {
+    background-color: #F8F9FA;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+.info-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.info-label {
+    display: block;
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #0056b3;
+}
+.dolar-symbol {
+    font-size: 22px;
+    font-weight: 600;
+    color: #0056b3;
+    margin-left: 4px;
+}
+#card-status strong, #account-status-store strong {
+    font-weight: 600;
+}
+
+/* --- LISTA DE TRANSACCIONES (MODIFICADO) --- */
+.transactions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    max-height: 300px; /* Aumentamos un poco la altura */
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.transaction {
+    background-color: #F8F9FA;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer; /* Hacemos que parezca clickeable */
+    transition: background-color 0.2s;
+}
+.transaction:hover {
+    background-color: #e9ecef;
+}
+
+.transaction-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-description {
+    font-weight: 500;
+    font-size: 16px;
+    color: #343a40;
+}
+
+.transaction-timestamp {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.transaction-amount {
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 20px;
+}
+
+.transaction-amount.positive {
+    color: #28a745;
+}
+
+.transaction-amount.negative {
+    color: #dc3545;
+}
+
+/* NUEVO: Estilos para los detalles extra (inicialmente ocultos) */
+.transaction-extra-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, margin-top 0.4s ease-out;
+    font-size: 14px;
+    color: #495057;
+}
+
+.transaction.open .transaction-extra-details {
+    max-height: 200px; /* Altura suficiente para el contenido */
+    margin-top: 15px; /* Espacio cuando se expande */
+    border-top: 1px solid #dee2e6;
+    padding-top: 10px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+/* --- BOTONES --- */
+button {
+    height: 48px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    padding: 0 20px;
+    transition: background-color 0.2s, transform 0.1s, color 0.2s, border-color 0.2s;
+}
+
+.btn-logout { background: #dc3545; color: #fff; }
+.btn-logout:hover { background: #c82333; }
+
+.button-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+.button-group-vertical button { width: 100%; background-color: #0056b3; color: #fff; }
+.button-group-vertical button:hover { background-color: #004494; }
+.button-group-vertical .btn-back, .button-group-vertical .btn-unimplemented { background-color: #6c757d; }
+.button-grup-vertical .btn-back:hover, .button-group-vertical .btn-unimplemented:hover { background-color: #5a6268; }
+
+/* --- FORMULARIOS --- */
+.transaction-form .input-group { display: flex; align-items: center; margin-bottom: 15px; }
+.transaction-form .input-group label { width: 200px; flex-shrink: 0; text-align: right; margin-right: 15px; font-weight: 500; }
+.transaction-form .input-group input, .transaction-form .input-group select {
+    width: 100%; height: 48px; font-size: 16px; background-color: #F8F9FA; border: 1px solid #dee2e6;
+    border-radius: 8px; padding: 0 15px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.transaction-form .input-group input:focus, .transaction-form .input-group select:focus { border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1); }
+.transaction-form .input-group input:disabled { background-color: #e9ecef; cursor: not-allowed; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #dee2e6; padding-top: 20px; }
+.form-actions .btn-back { background: none; border: 1px solid #6c757d; color: #6c757d; }
+.form-actions .btn-back:hover { background: #6c757d; color: #fff; }
+.form-actions .btn-primary { background: #28a745; color: #fff; }
+.form-actions .btn-primary:hover { background: #218838; }
+
+/* Icono Verificado */
+.verified-icon { width: 18px; height: 18px; background-color: #007bff; border-radius: 50%; display: inline-block; vertical-align: middle; margin-left: 8px; position: relative; }
+.verified-icon::after { content: "\2713"; font-size: 12px; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
