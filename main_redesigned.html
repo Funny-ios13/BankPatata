@@ -3,197 +3,568 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de BankPatata</title>
+    <title>BankPatata - Tu Banco Digital de Confianza</title>
     <link rel="icon" type="image/x-icon" href="https://i.imgur.com/ClT7q2m.png">
-    <link rel="stylesheet" href="main_style_redesigned.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #1e293b;
+            --secondary: #3730a3;
+            --success: #10B981;
+            --danger: #EF4444;
+            --dark: #0f172a;
+            --light: #F9FAFB;
+            --gray: #64748b;
+            --border: #E5E7EB;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-wrapper {
+            text-align: center;
+            padding: 50px 40px 30px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            position: relative;
+        }
+
+        .logo-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: white;
+            clip-path: ellipse(100% 100% at 50% 100%);
+        }
+
+        .logo-wrapper img {
+            max-width: 200px;
+            filter: brightness(0) invert(1);
+            position: relative;
+            z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .forms-wrapper {
+            display: flex;
+            width: 200%;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .form-container {
+            width: 50%;
+            padding: 20px 40px 40px;
+        }
+
+        .form-container h2 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 35px;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .input-group input {
+            width: 100%;
+            height: 52px;
+            font-size: 16px;
+            color: var(--dark);
+            background-color: var(--light);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 0 20px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .input-group input:focus + label {
+            color: var(--primary);
+        }
+
+        .terms-group {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .terms-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .terms-group a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .terms-group a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        button[type="submit"]:hover::before {
+            left: 100%;
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .toggle-link a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toggle-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .auth-container.active .forms-wrapper {
+            transform: translateX(-50%);
+        }
+
+        /* Loading states */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success/Error messages */
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        .message.success {
+            background: var(--success);
+            color: white;
+        }
+
+        .message.error {
+            background: var(--danger);
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .auth-container {
+                margin: 0;
+                border-radius: 0;
+                height: 100vh;
+                max-width: 100%;
+            }
+            
+            .logo-wrapper {
+                padding: 40px 30px 20px;
+            }
+            
+            .form-container {
+                padding: 20px 30px 30px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="panel-wrapper">
-        <header class="panel-header">
-            <img src="https://i.imgur.com/i0WNypp.png" alt="BankPatata Logo" class="logo">
-            <button type="button" class="btn-logout">Cerrar Sesión</button>
-        </header>
+    <div class="auth-container">
+        <div class="logo-wrapper">
+            <img src="https://i.imgur.com/i0WNypp.png" alt="BankPatata Logo">
+        </div>
 
-        <main class="content-area">
-            
-            <div class="menu-container" id="menu_normal" hidden>
-                <div class="menu-header">
-                    <h1>Tu Cuenta Bancaria</h1>
-                    <p class="subtitle">Resumen de tu actividad financiera.</p>
-                </div>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <span class="info-label">Saldo Actual</span>
-                        <span class="info-value" id="balance"></span><span class="dolar-symbol">$</span>
+        <div class="forms-wrapper">
+            <div class="form-container sign-in">
+                <form id="login-form">
+                    <h2>Bienvenido de vuelta</h2>
+                    <p class="subtitle">Ingresa a tu cuenta de BankPatata</p>
+                    <div class="input-group">
+                        <label for="login-user">Usuario</label>
+                        <input type="text" id="login-user" required autocomplete="username">
                     </div>
-                    <div class="info-card">
-                        <span class="info-label">Estado de la Tarjeta</span>
-                        <span class="info-value" id="card-status"></span>
+                    <div class="input-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" required autocomplete="current-password">
                     </div>
-                    <div class="info-card full-width">
-                        <span class="info-label">Correo Electrónico</span>
-                        <span class="info-value" id="email"></span>
-                    </div>
-                </div>
-                <h3>Últimos Movimientos</h3>
-                <div id="transactions-container" class="transactions-container"></div>
-            </div>
-
-            <div class="menu-container" id="menu_store" hidden>
-                <div class="menu-header">
-                    <h1 id="title-store">Sistema de Tiendas</h1>
-                    <p class="subtitle" id="tienda-label-store">Tienda: <span id="name-store"></span></p>
-                </div>
-                <div class="info-grid">
-                     <div class="info-card">
-                        <span class="info-label">Saldo de la Tienda</span>
-                        <span class="info-value" id="balance-store"></span><span id="dolar-symbol-store">$</span>
-                    </div>
-                    <div class="info-card">
-                        <span class="info-label">Estado de la Cuenta</span>
-                        <span class="info-value" id="account-status-store"></span>
-                    </div>
-                </div>
-                <div class="button-group-vertical">
-                    <button type="button" class="btn-options" hidden>Opciones Avanzadas</button>
-                    <button type="button" class="btn-purchase-beta">Realizar Cobro (BETA)</button>
-                </div>
-            </div>
-
-            <div class="menu-container" id="menu_options" hidden>
-                <div class="menu-header">
-                    <h1>Opciones Avanzadas de Tienda</h1>
-                    <p class="subtitle">Herramientas administrativas para tu negocio.</p>
-                </div>
-                <div class="button-group-vertical">
-                    <button type="button" data-menu="menu_deposit">Realizar Depósito a Cliente</button>
-                    <button type="button" data-menu="menu_retiro">Realizar Retiro a Cliente</button>
-                    <button type="button" data-menu="menu_transfer">Transferencia Administrativa</button>
-                    <button type="button" data-menu="menu_cuentas">Administrar Cuentas</button>
-                    <button type="button" class="btn-back" data-target="menu_store">Volver a Tienda</button>
-                </div>
-            </div>
-
-            <div class="menu-container" id="menu_cuentas" hidden>
-                <div class="menu-header">
-                    <h1>Administración de Cuentas</h1>
-                    <p class="subtitle">Gestiona las cuentas de los usuarios de BankPatata.</p>
-                </div>
-                <div class="button-group-vertical">
-                    <button type="button" data-menu="menu_crear_cuenta">Crear Nueva Cuenta</button>
-                    <button type="button" data-menu="menu_modificar_cuenta">Modificar Estado de Cuenta</button>
-                    <button type="button" class="btn-back" data-target="menu_options">Volver a Opciones</button>
-                </div>
-            </div>
-
-            <div class="menu-container form-view" id="menu_crear_cuenta" hidden>
-                <div class="menu-header"><h1>Crear Nueva Cuenta de Usuario</h1></div>
-                <form id="admin-create-form" class="transaction-form">
-                    <div class="input-group"><label for="admin-create-user">Nombre de Usuario:</label><input type="text" id="admin-create-user" required></div>
-                    <div class="input-group"><label for="admin-create-email">Correo Electrónico:</label><input type="email" id="admin-create-email" required></div>
-                    <div class="input-group"><label for="admin-create-pass">Contraseña Temporal:</label><input type="text" id="admin-create-pass" required></div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-back" data-target="menu_cuentas">Cancelar</button>
-                        <button type="submit" class="btn-primary">Crear Cuenta</button>
+                    <button type="submit">Iniciar Sesión</button>
+                    <div class="toggle-link">
+                        <p>¿Nuevo en BankPatata? <a href="#" class="signUpBtn-link">Crear cuenta</a></p>
                     </div>
                 </form>
             </div>
 
-            <div class="menu-container form-view" id="menu_modificar_cuenta" hidden>
-                 <div class="menu-header"><h1>Modificar Estado de Cuenta</h1></div>
-                 <form id="admin-modify-form" class="transaction-form">
-                     <div id="modify-step-1">
-                         <div class="input-group"><label for="admin-modify-user">Nombre de Usuario:</label><input type="text" id="admin-modify-user" required></div>
-                         <div class="form-actions">
-                            <button type="button" class="btn-back" data-target="menu_cuentas">Cancelar</button>
-                            <button type="button" id="btn-find-user" class="btn-primary">Buscar Usuario</button>
-                        </div>
-                     </div>
-                     <div id="modify-step-2" hidden>
-                        <div class="input-group">
-                            <label for="admin-modify-status">Estado de la Cuenta:</label>
-                            <select id="admin-modify-status">
-                                <option value="true">Activada</option>
-                                <option value="false">Suspendida (no puede iniciar sesión)</option>
-                                <option value="new">Nueva (requiere activación)</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label for="admin-modify-card">Estado de la Tarjeta:</label>
-                            <select id="admin-modify-card">
-                                <option value="true">Habilitada (puede hacer transacciones)</option>
-                                <option value="false">Deshabilitada (transacciones bloqueadas)</option>
-                            </select>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn-back" data-target="menu_cuentas">Cancelar</button>
-                            <button type="submit" class="btn-primary">Guardar Cambios</button>
-                        </div>
-                     </div>
-                 </form>
-            </div>
-            
-            <div class="menu-container form-view" id="menu_purchases" hidden>
-                <div class="menu-header">
-                     <h1>Realizar un Cobro</h1>
-                     <p>Tienda: <span id="name-purchase"></span></p>
-                </div>
-                 <form id="purchase-form" class="transaction-form">
-                    <div class="input-group"><label for="purchase-user">Usuario Cliente:</label><input type="text" id="purchase-user" name="user" required></div>
-                    <div class="input-group"><label for="purchase-desc">Descripción del Cobro:</label><input type="text" id="purchase-desc" name="description" required></div>
-                    <div class="input-group"><label for="purchase-price">Monto a Cobrar:</label><input type="number" id="purchase-price" name="price" step="0.01" required></div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-back" data-target="menu_store">Cancelar</button>
-                        <button type="submit" class="btn-primary">Confirmar Cobro</button>
+            <div class="form-container sign-up">
+                <form id="register-form">
+                    <h2>Únete a BankPatata</h2>
+                    <p class="subtitle">Crea tu cuenta en segundos</p>
+                    <div class="input-group">
+                        <label for="register-user">Usuario</label>
+                        <input type="text" id="register-user" required autocomplete="username">
                     </div>
-                 </form>
-            </div>
-            
-            <div class="menu-container form-view" id="menu_deposit" hidden>
-                 <div class="menu-header"><h1>Realizar Depósito a Cliente</h1></div>
-                <form id="deposit-form" class="transaction-form">
-                    <div class="input-group"><label for="deposit-user">Usuario Cliente:</label><input type="text" id="deposit-user" name="user" required></div>
-                    <div class="input-group"><label>Descripción:</label><input type="text" value="DEPOSITO BANKPATATA" disabled></div>
-                    <div class="input-group"><label for="deposit-amount">Monto a Depositar:</label><input type="number" id="deposit-amount" name="price" step="0.01" required></div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-back" data-target="menu_options">Cancelar</button>
-                        <button type="submit" class="btn-primary">Confirmar Depósito</button>
+                    <div class="input-group">
+                        <label for="register-email">Correo Electrónico</label>
+                        <input type="email" id="register-email" required autocomplete="email">
+                    </div>
+                    <div class="input-group">
+                        <label for="register-password">Contraseña</label>
+                        <input type="password" id="register-password" required autocomplete="new-password">
+                    </div>
+                    <div class="terms-group">
+                        <input type="checkbox" id="register-terms" required>
+                        <label for="register-terms">Acepto los <a href="#">términos y condiciones</a></label>
+                    </div>
+                    <button type="submit">Crear Cuenta</button>
+                    <div class="toggle-link">
+                        <p>¿Ya tienes cuenta? <a href="#" class="signInBtn-link">Inicia sesión</a></p>
                     </div>
                 </form>
             </div>
-
-            <div class="menu-container form-view" id="menu_retiro" hidden>
-                <div class="menu-header"><h1>Realizar Retiro a Cliente</h1></div>
-                <form id="retiro-form" class="transaction-form">
-                    <div class="input-group"><label for="retiro-user">Usuario Cliente:</label><input type="text" id="retiro-user" name="user" required></div>
-                    <div class="input-group"><label>Descripción:</label><input type="text" value="RETIRO BANKPATATA" disabled></div>
-                    <div class="input-group"><label for="retiro-amount">Monto a Retirar:</label><input type="number" id="retiro-amount" name="price" step="0.01" required></div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-back" data-target="menu_options">Cancelar</button>
-                        <button type="submit" class="btn-primary">Confirmar Retiro</button>
-                    </div>
-                </form>
-            </div>
-    
-            <div class="menu-container form-view" id="menu_transfer" hidden>
-                <div class="menu-header"><h1>Transferencia Administrativa</h1></div>
-                <form id="transfer-form" class="transaction-form">
-                    <div class="input-group"><label for="transfer-sender">Tu Usuario (Envío):</label><input type="text" id="transfer-sender" name="user1" required></div>
-                    <div class="input-group"><label for="transfer-receiver">Usuario Beneficiario:</label><input type="text" id="transfer-receiver" name="user2" required></div>
-                    <div class="input-group"><label for="transfer-desc">Descripción:</label><input type="text" id="transfer-desc" name="description" placeholder="Transferencia" required></div>
-                    <div class="input-group"><label for="transfer-amount">Monto:</label><input type="number" id="transfer-amount" name="price" step="0.01" required></div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-back" data-target="menu_options">Cancelar</button>
-                        <button type="submit" class="btn-primary">Confirmar Transferencia</button>
-                    </div>
-                </form>
-            </div>
-            
-        </main>
+        </div>
     </div>
-    <script src="main.js"></script>
+
+    <script>
+        // Mantener el código JavaScript original pero con mejoras en la presentación de mensajes
+        const trelloApi = {
+            apiKey: '42c42b2aeb78d2b5048bc85c88041207',
+            token: '5d2c98ce4d6ca544fca293a91f7720b55d79832cdf431358705656707ea11e1b',
+            boardId: '4nP65kjP',
+            accountsListId: '65f10a46b34fce29bd56c327',
+            movimientosListId: '65f269323f5a0b15806db352'
+        };
+
+        async function request(endpoint, options = {}) {
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const url = `https://api.trello.com/1/${endpoint}${separator}key=${trelloApi.apiKey}&token=${trelloApi.token}`;
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`Error de Trello: ${response.statusText}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error("Error en la petición a Trello:", error);
+                throw error;
+            }
+        }
+
+        async function getBoardCards() {
+            return request(`boards/${trelloApi.boardId}/cards`);
+        }
+
+        async function createCard(idList, name) {
+            const endpoint = `cards?idList=${idList}&name=${encodeURIComponent(name)}`;
+            return request(endpoint, { method: 'POST' });
+        }
+
+        function parseAccountCard(cardName) {
+            const parts = cardName.split(' | ');
+            if (parts.length < 7) return null;
+            return {
+                username: parts[0],
+                password: parts[1],
+                balance: parts[2],
+                email: parts[3],
+                storeEnabled: parts[4],
+                activated: parts[5],
+                cardEnabled: parts[6]
+            };
+        }
+
+        function showMessage(message, type = 'error') {
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = message;
+            document.body.appendChild(messageEl);
+            
+            setTimeout(() => {
+                messageEl.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => messageEl.remove(), 300);
+            }, 3000);
+        }
+
+        async function handleLogin(username, password) {
+            const button = document.querySelector('#login-form button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span class="loading"></span>';
+            button.disabled = true;
+
+            try {
+                const cards = await getBoardCards();
+                const userCardData = cards
+                    .map(card => parseAccountCard(card.name))
+                    .find(data => data && data.username === username && data.password === password);
+
+                if (!userCardData) {
+                    throw new Error('Usuario o contraseña incorrectos');
+                }
+
+                if (userCardData.activated === 'new') {
+                    throw new Error('Tu cuenta necesita activación. Contacta al administrador.');
+                }
+
+                if (userCardData.activated !== 'true') {
+                    throw new Error('Tu cuenta está deshabilitada');
+                }
+
+                showMessage('¡Inicio de sesión exitoso!', 'success');
+
+                const urlParams = new URLSearchParams({
+                    user: userCardData.username,
+                    accountStatus: userCardData.activated,
+                    storeEnabled: userCardData.storeEnabled,
+                    email: userCardData.email,
+                    balance: userCardData.balance,
+                    cardEnabled: userCardData.cardEnabled,
+                });
+                
+                setTimeout(() => {
+                    window.location.href = `./main_redesigned.html?${urlParams.toString()}`;
+                }, 1000);
+
+            } catch (error) {
+                showMessage(error.message);
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        async function handleRegister(username, email, password) {
+            const button = document.querySelector('#register-form button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span class="loading"></span>';
+            button.disabled = true;
+
+            try {
+                const cards = await getBoardCards();
+                const userExists = cards.some(card => {
+                    const existingUsername = card.name.split(' | ')[0];
+                    return existingUsername === username;
+                });
+
+                if (userExists) {
+                    throw new Error('El usuario ya existe');
+                }
+
+                const newAccountName = `${username} | ${password} | 0 | ${email} | storeNO | new | false`;
+                const newMovementsName = `${username} / BankPatata-ACTIVATION & 0.00 & ${new Date().toISOString()}`;
+
+                await createCard(trelloApi.accountsListId, newAccountName);
+                await createCard(trelloApi.movimientosListId, newMovementsName); 
+
+                showMessage('¡Cuenta creada exitosamente!', 'success');
+                
+                setTimeout(() => {
+                    document.querySelector('.auth-container').classList.remove('active');
+                    document.getElementById('register-form').reset();
+                }, 1500);
+
+            } catch (error) {
+                showMessage(error.message);
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const authContainer = document.querySelector('.auth-container');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const signUpBtnLink = document.querySelector('.signUpBtn-link');
+            const signInBtnLink = document.querySelector('.signInBtn-link');
+
+            signUpBtnLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                authContainer.classList.add('active');
+            });
+
+            signInBtnLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                authContainer.classList.remove('active');
+            });
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const user = document.getElementById('login-user').value.trim();
+                const pass = document.getElementById('login-password').value.trim();
+                if (user && pass) {
+                    handleLogin(user, pass);
+                }
+            });
+
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const user = document.getElementById('register-user').value.trim();
+                const email = document.getElementById('register-email').value.trim();
+                const pass = document.getElementById('register-password').value.trim();
+                const terms = document.getElementById('register-terms').checked;
+
+                if (!terms) {
+                    showMessage('Debes aceptar los términos y condiciones');
+                    return;
+                }
+
+                if (user && email && pass) {
+                    handleRegister(user, email, pass);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
