@@ -772,6 +772,19 @@
         </div>
     </main>
 
-    <script src="main.js"></script>
+    <script>
+        // Debug inicial
+        console.log('Main page loaded');
+        console.log('URL params:', window.location.search);
+        
+        // Si main.js existe, lo cargamos
+        const script = document.createElement('script');
+        script.src = 'main.js';
+        script.onerror = function() {
+            console.error('No se pudo cargar main.js, usando código inline');
+            // Si main.js no se carga, aquí iría el código completo
+        };
+        document.body.appendChild(script);
+    </script>
 </body>
 </html>
